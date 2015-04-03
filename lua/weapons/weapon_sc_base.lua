@@ -1,16 +1,17 @@
+--// Scrap weapon base which hides view and world models as well as contains the SWEP Construction Kit code
+
 if SERVER then
 	AddCSLuaFile()
 end
 
-SWEP.PrintName 				= "Metal Hook"
+SWEP.PrintName 				= "Scrap Weapon"
 SWEP.Author					= "Exho"
 
-SWEP.Slot					= 3
-SWEP.SlotPos				= 1
+SWEP.Slot					= 1
 SWEP.DrawAmmo 				= true
 SWEP.DrawCrosshair 			= true
 SWEP.HoldType				= "melee"
-SWEP.Spawnable				= true
+SWEP.Spawnable				= false
 SWEP.AdminSpawnable			= true
 
 SWEP.Primary.Ammo       	= "none"
@@ -21,102 +22,26 @@ SWEP.Primary.Automatic		= true
 SWEP.Secondary.Ammo       	= "none"
 SWEP.Secondary.Delay    	= 1
 
-SWEP.ViewModel 				= "models/weapons/c_crowbar.mdl"
-SWEP.WorldModel 			= "models/weapons/w_crowbar.mdl"
+SWEP.ViewModel 				= ""
+SWEP.WorldModel 			= ""
 SWEP.ViewModelFlip			= false
 
-SWEP.ShowWorldModel = true
-SWEP.ViewModelBoneMods = {}
+-- Gotta make sure we have hands
+SWEP.UseHands 				= true
 
-SWEP.soundSwing = Sound("Weapon_Crowbar.Single")
+-- Hide world model
+SWEP.ShowWorldModel 		= false
+SWEP.ViewModelBoneMods 		= {}
 
-function SWEP:PrimaryAttack()
-	self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
-	
-	local startPos = self.Owner:GetShootPos()
-	local endPos = startPos + (self.Owner:GetAimVector() * 70)
-
-	local data = {start=startPos, endpos=endPos, filter=self.Owner, mask=MASK_SHOT_HULL}
-	local tr = util.TraceLine( data )
-	
-	-- Swing sound
-	self:EmitSound( self.soundSwing )
-	
-	local ent = tr.Entity
-	if IsValid( ent ) or tr.HitWorld then
-		-- Animations
-		self:SendWeaponAnim( ACT_VM_MISSCENTER )
-		
-		if SERVER then
-			self.Owner:SetAnimation( PLAYER_ATTACK1 )
-		end
-		
-		-- Hit effects
-		local effect = EffectData()
-        effect:SetStart( startPos )
-        effect:SetOrigin( tr.HitPos )
-        effect:SetNormal( tr.Normal )
-        effect:SetEntity( ent )
-		
-		if ent:IsPlayer() or ent:GetClass() == "prop_ragdoll" then
-			util.Effect("BloodImpact", effect)
-
-			self.Owner:FireBullets({Num=1, Src=spos, Dir=self.Owner:GetAimVector(), Spread=Vector(0,0,0), Tracer=0, Force=1, Damage=0})
-        else
-			util.Effect("Impact", effect)
-        end
-	else
-		-- Swing wildly at the air
-		self:SendWeaponAnim( ACT_VM_MISSCENTER )
-	end
-	
-	if SERVER then
-		-- Trace again to deal damage
-		local tr = util.TraceLine({start=startPos, endpos=endPos, filter=self.Owner})
-      
-		self.Owner:SetAnimation( PLAYER_ATTACK1 )
-
-		if IsValid( ent ) then
-			local dmg = DamageInfo()
-			dmg:SetDamage( self.Primary.Damage )
-			dmg:SetAttacker( self.Owner )
-			dmg:SetInflictor( self )
-			dmg:SetDamageForce(self.Owner:GetAimVector() * 1500 )
-			dmg:SetDamagePosition( self.Owner:GetPos() )
-			dmg:SetDamageType(DMG_CLUB)
-			
-			-- Inflict the damage
-			ent:DispatchTraceAttack(dmg, startPos + (self.Owner:GetAimVector() * 3), endPos)
-		end
-	end
-end
-
-function SWEP:SecondaryAttack()
-	self:SetNextSecondaryFire( CurTime() + self.Secondary.Delay )
-	
-	if CLIENT then
-		self.Owner:SetAnimation( PLAYER_ATTACK1 )
-	end
-	
-	self:SendWeaponAnim( ACT_VM_HITCENTER )
-end
-
-SWEP.VElements = {
-	["Hook"] = { type = "Model", model = "models/props_junk/meathook001a.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(5, 2, -7.87), angle = Angle(2, 75.973, -6), size = Vector(0.5, 0.5, 0.5), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
-
-SWEP.WElements = {
-	["Hook"] = { type = "Model", model = "models/props_junk/meathook001a.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(5, 1, -9), angle = Angle(0, 110, 5), size = Vector(0.5, 0.6, 0.8), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
-}
-
+-- Hide the default view model
 function SWEP:PreDrawViewModel( vm, ply, wep )
 	vm:SetMaterial( "engine/occlusionproxy" )
 end
 
+-- Reset the material so the other view models show up
 function SWEP:PostDrawViewModel( vm, ply, wep )
 	vm:SetMaterial()
 end
-
 
 
 /********************************************************
