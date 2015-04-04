@@ -68,47 +68,9 @@ hook.Add("ScalePlayerDamage", "scrap_damagereduction", function( ply, hitgroup, 
 	end
 end)
 
-net.Receive( "scrap_updatearmor", function( len, ply )
-	--[[print("Received armor update from: "..ply:Nick())
-	local attachments = net.ReadTable()
-	
-	if attachments == nil then return end
-	
-	ply.armorHitgroups = {}
-	ply.attachments = ply.attachments or {}
-	
-	-- If the server thinks the player has more armor than the client says, wipe the server.
-	-- Why am I trusting the client?
-	if table.Count(ply.attachments) > table.Count(attachments) then
-		ply.attachments = {}
-	end
-	
-	for bone, class in pairs( attachments ) do
-		local data = scrapArmor.attachments[class]
-		
-		if ply.attachments[bone] then
-			if ply.attachments[bone].class != class then
-				ply.attachments[bone] = {class=class, health=data.health}
-			end
-		else
-			ply.attachments[bone] = {class=class, health=data.health}
-		end
-	end
-
-	
-	for bone, class in pairs( attachments ) do
-		-- Log hitgroups that are protected by armor
-		local hitgroup = scrapArmor.stringToHitgroup[bone]
-		if hitgroup then
-			ply.armorHitgroups[hitgroup] = class
-		end
-	end
-	
-	-- Make sure the other players draw this armor too
-	net.Start("scrap_updatearmor")
-		net.WriteString( ply:Nick() )
-		net.WriteTable( ply.attachments )
-	net.Broadcast()]]
+hook.Add("PlayerDeath", "scrap_damagereduction", function( ply, inf, att )
+	-- Remove their armor on death
+	scrapArmor.removeArmor( ply, "all" )
 end)
 
 -- Gives the player a new piece of armor

@@ -27,9 +27,6 @@ SWEP.ViewModel          	= "models/weapons/cstrike/c_knife_t.mdl"
 SWEP.WorldModel        		= "models/weapons/w_knife_t.mdl"
 SWEP.ViewModelFlip			= false
 
-SWEP.ShowWorldModel = true
-SWEP.ViewModelBoneMods = {}
-
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 	
@@ -42,6 +39,8 @@ function SWEP:PrimaryAttack()
 	local data = {start=startPos, endpos=endPos, filter=self.Owner, mask=MASK_SHOT_HULL, mins=mins, maxs=maxs}
 	local tr = util.TraceLine( data )
 	
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	
 	local ent = tr.Entity
 	if IsValid( ent ) or tr.HitWorld then
 		-- Animations
@@ -52,10 +51,6 @@ function SWEP:PrimaryAttack()
 			self:EmitSound( "Weapon_Knife.HitWall" )
 		else
 			self:EmitSound( "Weapon_Knife.Hit" )
-		end
-		
-		if SERVER then
-			self.Owner:SetAnimation( PLAYER_ATTACK1 )
 		end
 		
 		-- Hit effects

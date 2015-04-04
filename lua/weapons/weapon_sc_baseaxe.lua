@@ -41,14 +41,12 @@ function SWEP:PrimaryAttack()
 	-- Swing sound
 	self:EmitSound( self.swingSound )
 	
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	
 	local ent = tr.Entity
 	if IsValid( ent ) or tr.HitWorld then
 		-- Animations
 		self:SendWeaponAnim( ACT_VM_MISSCENTER )
-		
-		if SERVER then
-			self.Owner:SetAnimation( PLAYER_ATTACK1 )
-		end
 		
 		-- Hit effects
 		local effect = EffectData()

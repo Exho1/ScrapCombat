@@ -2,7 +2,14 @@
 scrapArmor = {}
 scrapArmor.attachments = {}
 
---[[ Idea - Modern scrap warfare with medieval weapons ORRRR medieval scrap warfare
+--[[ 
+	* Gamemode idea brainstorming:
+		- Relatively fast paced combat like EFT
+		- Some sort of base capture or seige maybe
+		- Different tiers of weapons that can be earned
+		- Incorporate map props into the armor or weapon system somehow
+		- Picking up dropped weapons
+	
 	* Armor made up of props and other scrap items
 	* Eliminate net.WriteTable 
 	* Armor types
@@ -13,11 +20,12 @@ scrapArmor.attachments = {}
 		- Axe
 		- Sword
 		- Knife
-		- Crossbow? 
+		- Crossbow? Flaming bolts! 
 		- Hammer
 		
 	models/props_c17/metalladder001.mdl
 	models/props_junk/iBeam01a.mdl
+	models\props_junk\garbage_glassbottle003a_chunk01.mdl
 ]]
 
 

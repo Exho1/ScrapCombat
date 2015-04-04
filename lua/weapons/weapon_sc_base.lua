@@ -6,6 +6,7 @@ end
 
 SWEP.PrintName 				= "Scrap Weapon"
 SWEP.Author					= "Exho"
+SWEP.Category 				= "Scrap Weapons"
 
 SWEP.Slot					= 1
 SWEP.DrawAmmo 				= true
@@ -65,6 +66,8 @@ SWEP.ShowWorldModel 		= false
 
 function SWEP:Initialize()
 	// other initialize code goes here
+	
+	self:SetWeaponHoldType(self.HoldType)
 
 	if CLIENT then
 	
