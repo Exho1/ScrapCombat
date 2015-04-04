@@ -6,7 +6,7 @@ end
 
 SWEP.PrintName 				= "Scrap Weapon"
 SWEP.Author					= "Exho"
-SWEP.Category 				= "Scrap Weapons"
+SWEP.Category 				= "Scrap"
 
 SWEP.Slot					= 1
 SWEP.DrawAmmo 				= true

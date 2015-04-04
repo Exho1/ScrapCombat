@@ -22,6 +22,9 @@ scrapArmor.attachments = {}
 		- Knife
 		- Crossbow? Flaming bolts! 
 		- Hammer
+	* SWEP Kit saves
+		- sword
+		- sword2h
 		
 	models/props_c17/metalladder001.mdl
 	models/props_junk/iBeam01a.mdl
