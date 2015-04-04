@@ -29,10 +29,6 @@ SWEP.ViewModelFlip			= false
 -- Gotta make sure we have hands
 SWEP.UseHands 				= true
 
--- Hide world model
-SWEP.ShowWorldModel 		= false
-SWEP.ViewModelBoneMods 		= {}
-
 -- Hide the default view model
 function SWEP:PreDrawViewModel( vm, ply, wep )
 	vm:SetMaterial( "engine/occlusionproxy" )
@@ -42,6 +38,9 @@ end
 function SWEP:PostDrawViewModel( vm, ply, wep )
 	vm:SetMaterial()
 end
+
+-- Hide world model
+SWEP.ShowWorldModel 		= false
 
 
 /********************************************************

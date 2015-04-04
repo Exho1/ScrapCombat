@@ -13,9 +13,14 @@ scrapArmor.attachments = {}
 		- Axe
 		- Sword
 		- Knife
-		- Crossbow?
+		- Crossbow? 
 		- Hammer
+		
+	models/props_c17/metalladder001.mdl
+	models/props_junk/iBeam01a.mdl
 ]]
+
+
 
 if SERVER then
 	AddCSLuaFile()

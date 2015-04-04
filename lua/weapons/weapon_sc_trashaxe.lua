@@ -6,6 +6,7 @@ SWEP.PrintName 				= "Trash Axe"
 SWEP.Author					= "Exho"
 
 SWEP.Base					= "weapon_sc_baseaxe"
+SWEP.HoldType				= "melee"
 SWEP.DrawAmmo 				= true
 SWEP.DrawCrosshair 			= true
 SWEP.Spawnable				= true
@@ -18,6 +19,7 @@ SWEP.Primary.Automatic		= true
 
 SWEP.Secondary.Ammo       	= "none"
 SWEP.Secondary.Delay    	= 1
+
 
 SWEP.VElements = {
 	["Lamp"] = { type = "Model", model = "models/props_interiors/Furniture_Lamp01a.mdl", bone = "ValveBiped.Bip01_R_Hand", rel = "", pos = Vector(3, 2, -6), angle = Angle(7, 0, 180), size = Vector(0.5, 0.5, 0.5), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }

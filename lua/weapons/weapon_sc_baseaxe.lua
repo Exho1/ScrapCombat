@@ -27,9 +27,6 @@ SWEP.ViewModel 				= "models/weapons/c_crowbar.mdl"
 SWEP.WorldModel 			= "models/weapons/w_crowbar.mdl"
 SWEP.ViewModelFlip			= false
 
-SWEP.ShowWorldModel = true
-SWEP.ViewModelBoneMods = {}
-
 SWEP.swingSound = Sound("Weapon_Crowbar.Single")
 
 function SWEP:PrimaryAttack()
@@ -102,17 +99,6 @@ function SWEP:SecondaryAttack()
 	
 	self:SendWeaponAnim( ACT_VM_HITCENTER )
 end
-
--- Hide the default view model
-function SWEP:PreDrawViewModel( vm, ply, wep )
-	vm:SetMaterial( "engine/occlusionproxy" )
-end
-
--- Reset the material so the other view models show up
-function SWEP:PostDrawViewModel( vm, ply, wep )
-	vm:SetMaterial()
-end
-
 
 
 
