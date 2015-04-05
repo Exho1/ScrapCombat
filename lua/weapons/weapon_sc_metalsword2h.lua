@@ -12,8 +12,8 @@ SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
 
 SWEP.Primary.Ammo       	= "none"
-SWEP.Primary.Damage       	= 10
-SWEP.Primary.Delay      	= 0.5
+SWEP.Primary.Damage       	= 30
+SWEP.Primary.Delay      	= 1.2
 SWEP.Primary.Automatic		= true
 
 SWEP.Secondary.Ammo       	= "none"

@@ -3,14 +3,9 @@ scrapArmor = {}
 scrapArmor.attachments = {}
 
 --[[ 
-	* Gamemode idea brainstorming:
-		- Relatively fast paced combat like EFT
-		- Some sort of base capture or seige maybe
-		- Different tiers of weapons that can be earned
-		- Incorporate map props into the armor or weapon system somehow
-		- Picking up dropped weapons
+	* Trello: https://trello.com/b/sjf0ICXt/scrap-combat
 	
-	* Armor made up of props and other scrap items
+
 	* Eliminate net.WriteTable 
 	* Armor types
 		- Helmet
@@ -25,10 +20,6 @@ scrapArmor.attachments = {}
 	* SWEP Kit saves
 		- sword
 		- sword2h
-		
-	models/props_c17/metalladder001.mdl
-	models/props_junk/iBeam01a.mdl
-	models\props_junk\garbage_glassbottle003a_chunk01.mdl
 ]]
 
 

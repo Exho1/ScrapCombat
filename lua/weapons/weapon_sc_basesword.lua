@@ -1,4 +1,4 @@
---// Base SWEP for an 2 handed sword (crowbar mod)
+--// Base SWEP for an 2 handed sword (axe mod)
 
 if SERVER then
 	AddCSLuaFile()
@@ -17,7 +17,7 @@ SWEP.AdminSpawnable			= true
 
 SWEP.Primary.Ammo       	= "none"
 SWEP.Primary.Damage       	= 20
-SWEP.Primary.Delay      	= 0.5
+SWEP.Primary.Delay      	= 1
 SWEP.Primary.Automatic		= true
 
 SWEP.Secondary.Ammo       	= "none"

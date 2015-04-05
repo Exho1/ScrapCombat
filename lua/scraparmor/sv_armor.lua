@@ -1,8 +1,6 @@
-if CLIENT then return end
+--// Serverside armor management
 
 util.AddNetworkString("scrap_updatearmor")
-
-util.AddNetworkString("scrap_updatearmor2")
 util.AddNetworkString("scrap_addarmor")
 util.AddNetworkString("scrap_removearmor")
 
@@ -29,46 +27,46 @@ scrapArmor.stringToHitgroup = {
 
 hook.Add("ScalePlayerDamage", "scrap_damagereduction", function( ply, hitgroup, dmginfo )
 	if ply.armorHitgroups != nil then
-		for hg, class in pairs( ply.armorHitgroups ) do
-			if hg == hitgroup then
-				local data = scrapArmor.attachments[class]
-				local dmg = dmginfo:GetDamage()
-				
-				-- Convert the number from being 1-100 to 0.01 to 1 and get the inverse of that out of 1 (.6 -> .4)
-				local dmgModifier = 1 - (data.strength * 0.01)
-				
-				-- Scale the damage according to out decimal modifier
-				dmginfo:ScaleDamage( dmgModifier )
-				
-				ply.attachments = ply.attachments or {}
-				local aData = nil
-				for bone, tbl in pairs( ply.attachments ) do
-					if tbl.class == class then
-						aData = tbl
-					end
+		if ply.armorHitgroups[ hitgroup ] then
+			local class = ply.armorHitgroups[ hitgroup ]
+			local data = scrapArmor.attachments[class]
+			local dmg = dmginfo:GetDamage()
+			
+			-- Convert the number from being 1-100 to 0.01 to 1 and subtract it by 1 (0.6 -> 0.4)
+			local dmgModifier = 1 - (data.strength * 0.01)
+			
+			-- Scale the damage according to our decimal modifier
+			dmginfo:ScaleDamage( dmgModifier )
+			
+			-- Get the attachment table for the armor damaged
+			ply.attachments = ply.attachments or {}
+			local aData = nil
+			for bone, tbl in pairs( ply.attachments ) do
+				if tbl.class == class then
+					aData = tbl
 				end
-				
-				-- Take damage for the armor
-				if aData then
-					aData.health = aData.health - dmg
-					
-					-- Armor broke
-					if aData.health <= 0 then
-						scrapArmor.removeArmor( ply, "class", class )
-						ply:ChatPrint("Armor ("..class..") broke due to damage!")
-					end
-				end
-				
-				net.Start("scrap_updatearmor")
-					net.WriteString( ply:SteamID() )
-					net.WriteTable( ply.attachments )
-				net.Broadcast()
 			end
+			
+			-- Take damage for the armor
+			if aData then
+				aData.health = aData.health - dmg
+				
+				-- Armor broke
+				if aData.health <= 0 then
+					scrapArmor.removeArmor( ply, "class", class )
+					ply:ChatPrint("Armor ("..class..") broke due to damage!")
+				end
+			end
+			
+			net.Start("scrap_updatearmor")
+				net.WriteString( ply:SteamID() )
+				net.WriteTable( ply.attachments )
+			net.Broadcast()
 		end
 	end
 end)
 
-hook.Add("PlayerDeath", "scrap_damagereduction", function( ply, inf, att )
+hook.Add("PlayerDeath", "scrap_playerdeath", function( ply, inf, att )
 	-- Remove their armor on death
 	scrapArmor.removeArmor( ply, "all" )
 end)
@@ -99,11 +97,6 @@ function scrapArmor.giveArmor( ply, class )
 		net.WriteString( ply:SteamID() )
 		net.WriteString( class )
 	net.Broadcast()
-	
-	--[[net.Start("scrap_updatearmor")
-		net.WriteString( ply:SteamID() )
-		net.WriteTable( ply.attachments )
-	net.Broadcast()]]
 end
 
 -- Removes the player's armor either one piece or all of it
@@ -134,16 +127,6 @@ function scrapArmor.removeArmor( ply, type, arg )
 		end
 	end
 	
-	--[[net.Start("scrap_removearmor")
-		net.WriteString( type )
-		net.WriteString( arg or "" )
-	net.Send(ply)]]
-	
-	--[[net.Start("scrap_updatearmor")
-		net.WriteString( ply:SteamID() )
-		net.WriteTable( ply.attachments )
-	net.Broadcast()]]
-	
 	net.Start("scrap_removearmor")
 		net.WriteString( ply:SteamID() )
 		net.WriteString( type )
@@ -159,6 +142,7 @@ function findExho()
 	end
 end
 
+-- TEMPORARY
 function addTrash()
 	local ply = findExho()
 	scrapArmor.giveArmor( ply, "trash_helmet" )
@@ -174,16 +158,14 @@ function addWood()
 end
 
 function addMetal()
-	--local ply = findExho()
-	for k, ply in pairs(player.GetAll()) do
-		scrapArmor.giveArmor( ply, "metal_helmet" )
-		scrapArmor.giveArmor( ply, "metal_chestplate" )
-		scrapArmor.giveArmor( ply, "metal_leggings" )
-	end
+	local ply = findExho()
+	scrapArmor.giveArmor( ply, "metal_helmet" )
+	scrapArmor.giveArmor( ply, "metal_chestplate" )
+	scrapArmor.giveArmor( ply, "metal_leggings" )
 end
 
 function removeArmor()
-	--local ply = findExho()
+	local ply = findExho()
 	for k, ply in pairs(player.GetAll()) do
 		scrapArmor.removeArmor( ply, "all" )
 	end

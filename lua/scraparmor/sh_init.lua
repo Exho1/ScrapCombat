@@ -1,3 +1,4 @@
+--// Shared armor management
 
 -- Includes all the scrap armor pieces 
 function scrapArmor.includeItems()
@@ -37,6 +38,7 @@ function scrapArmor.registerAttachment( tbl )
 	scrapArmor.attachments[tbl.class] = tbl
 end
 
+-- Bones and attachments
 scrapArmor.headBones = {
 	["ValveBiped.Bip01_Head1"] = "",
 	
@@ -68,7 +70,7 @@ end
 
 function player.getBySteamID( id )
 	for k, v in pairs( player.GetAll() ) do
-		if v:SteamID() == id or v:SteamID() == "NULL" then -- TEMP
+		if v:SteamID() == id or v:SteamID() == "NULL" then -- TEMP for bot support
 			return v
 		end
 	end

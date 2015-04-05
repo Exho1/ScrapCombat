@@ -55,7 +55,7 @@ function SWEP:PrimaryAttack()
         effect:SetNormal( tr.Normal )
         effect:SetEntity( ent )
 		
-		if ent:IsPlayer() or ent:GetClass() == "prop_ragdoll" then
+		if ent:IsPlayer() or ent:IsNPC() or ent:GetClass() == "prop_ragdoll" then
 			util.Effect("BloodImpact", effect)
 
 			self.Owner:FireBullets({Num=1, Src=spos, Dir=self.Owner:GetAimVector(), Spread=Vector(0,0,0), Tracer=0, Force=1, Damage=0})

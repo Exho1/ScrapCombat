@@ -2,7 +2,7 @@ if SERVER then
 	AddCSLuaFile()
 end
 
-SWEP.PrintName 				= "Metal Sword"
+SWEP.PrintName 				= "Wood Sword"
 SWEP.Author					= "Exho"
 
 SWEP.Base					= "weapon_sc_baseaxe"

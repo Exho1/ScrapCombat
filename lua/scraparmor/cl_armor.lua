@@ -1,4 +1,4 @@
-
+--// Clientside armor management
 
 -- Adds the armor with the given name to a player
 function scrapArmor.add( class, ply )
@@ -26,7 +26,8 @@ function scrapArmor.add( class, ply )
 					ply.armor[index2].health = health
 				end
 			else
-				print("Cannot add new armor on top of existing for: ", ply:Nick())
+				print("Cannot add new armor ("..class..") on top of existing for: ", ply:Nick())
+				return
 			end
 		end
 	end
@@ -134,7 +135,7 @@ net.Receive( "scrap_updatearmor", function()
 	--scrapArmor.removeAll( ply )
 	
 	-- Add the new armor from the class table
-	for bone, tbl in pairs( classTable ) do
+	--[[for bone, tbl in pairs( classTable ) do
 		local data = scrapArmor.attachments[tbl.class]
 		
 		if data then
@@ -146,10 +147,12 @@ net.Receive( "scrap_updatearmor", function()
 				end
 			end
 			
+			print("Why am I adding", tbl.class)
 			scrapArmor.add( tbl.class, ply )
 		end
-	end
+	end]]
 	
+	-- Update health
 	for bone, model in pairs( ply.armor ) do
 		if classTable[bone] then
 			local data = scrapArmor.attachments[model.class]
@@ -215,6 +218,7 @@ local matLeggings = Material( "vgui/scraparmor/leggings.png", "noclamp smooth" )
 hook.Add("HUDPaint", "armor_indicator", function()
 	local client = LocalPlayer()
 	if client.armor and table.Count(client.armor) > 0 then
+		-- Sizes for the images
 		local helmetH = 50
 		local helmetW = 30
 		local chestH = 70
@@ -225,6 +229,7 @@ hook.Add("HUDPaint", "armor_indicator", function()
 		local x = 75
 		local y = ScrH() / 2 - helmetH / 2 - chestH / 2 - legH / 2
 		
+		-- Default color is a slightly transparent white
 		local col = Color( 255, 255, 255, 200 )
 		local helmetColor = col
 		local chestColor = col
@@ -265,6 +270,7 @@ hook.Add("HUDPaint", "armor_indicator", function()
 			legColor = getDestroyedColor( scrapArmor.legBones )
 		end
 		
+		-- Draw the armor indicators
 		surface.SetMaterial( matHelmet ) 
 		surface.SetDrawColor( helmetColor )
 		surface.DrawTexturedRect( x - (helmetW/2), y, helmetW, helmetH )
