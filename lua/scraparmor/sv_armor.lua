@@ -58,6 +58,7 @@ hook.Add("ScalePlayerDamage", "scrap_damagereduction", function( ply, hitgroup, 
 				end
 			end
 			
+			-- Make sure all the players know this
 			net.Start("scrap_updatearmor")
 				net.WriteString( ply:SteamID() )
 				net.WriteTable( ply.attachments )

@@ -27,6 +27,7 @@ scrapArmor.attachments = {}
 if SERVER then
 	AddCSLuaFile()
 	AddCSLuaFile("scraparmor/cl_armor.lua")
+	AddCSLuaFile("scraparmor/cl_inventory.lua")
 	AddCSLuaFile("scraparmor/sh_init.lua")
 	
 	local images = file.Find("materials/vgui/scraparmor/*.png", "GAME") 
@@ -42,6 +43,9 @@ if CLIENT then
 
 	include("scraparmor/sh_init.lua")
 	include("scraparmor/cl_armor.lua")
+	include("scraparmor/cl_inventory.lua")
+	
+	LocalPlayer().armor = {}
 	
 end
 
