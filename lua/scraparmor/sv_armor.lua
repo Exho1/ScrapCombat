@@ -72,6 +72,34 @@ hook.Add("PlayerDeath", "scrap_playerdeath", function( ply, inf, att )
 	scrapArmor.removeArmor( ply, "all" )
 end)
 
+--// Receives an armor update from the client
+net.Receive( "scrap_updatearmor", function( len, ply )
+	print("Received clientside update from "..ply:Nick())
+	local newArmor = net.ReadTable()
+	
+	-- TODO: Implement a way to verify this, it relies on a lot of client input which is prone to malicious tinkering
+	
+	for bone, tbl in pairs( ply.attachments ) do
+		if newArmor[bone] then
+			if newArmor[bone] != tbl.class then -- Switched armor in the same slot
+				print("Differing armor class", tbl.class, newArmor[bone])
+				scrapArmor.removeArmor( ply, "bone", bone )
+				scrapArmor.giveArmor( ply, tbl.class )
+			end
+		else -- Removed armor from this slot
+			print("Removed armor", tbl.class)
+			scrapArmor.removeArmor( ply, "class", tbl.class )
+		end
+	end
+	
+	for bone, class in pairs( newArmor ) do
+		if not ply.attachments[bone] then -- Added new piece of armor
+			print("Added armor", class)
+			scrapArmor.giveArmor( ply, class )
+		end
+	end
+end)
+
 -- Gives the player a new piece of armor
 function scrapArmor.giveArmor( ply, class )
 	ply.armorHitgroups = ply.armorHitgroups or {}

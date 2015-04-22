@@ -78,7 +78,8 @@ end
 hook.Add("PostPlayerDraw", "armor", function( ply )
 	if not ply.armor then return end
 	if not ply:Alive() then return end
-	--if ply == LocalPlayer() then return end
+	
+	--if ply == LocalPlayer() then return end -- TEMP
 	
 	for bone, model in pairs( ply.armor ) do
 		local data = scrapArmor.attachments[model.class]
@@ -121,6 +122,19 @@ hook.Add("PostPlayerDraw", "armor", function( ply )
 		end
 	end
 end)
+
+--// Returns the player's armor table as [bone] = class so it can be networked 
+function scrapArmor.getNWableArmor( tbl )
+	tbl = tbl or LocalPlayer().armor
+	
+	local optimized = {}
+	
+	for bone, model in pairs( tbl ) do
+		optimized[bone] = model.class
+	end
+	
+	return optimized
+end
 
 -- Update a player's armor
 net.Receive( "scrap_updatearmor", function()
