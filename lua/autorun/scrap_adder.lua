@@ -22,13 +22,12 @@ scrapArmor.attachments = {}
 		- sword2h
 ]]
 
-
-
 if SERVER then
 	AddCSLuaFile()
 	AddCSLuaFile("scraparmor/cl_armor.lua")
 	AddCSLuaFile("scraparmor/cl_inventory.lua")
 	AddCSLuaFile("scraparmor/sh_init.lua")
+	AddCSLuaFile("includes/net_meepdarkness.lua")
 	
 	local images = file.Find("materials/vgui/scraparmor/*.png", "GAME") 
 	for _, name in pairs( images ) do
@@ -37,6 +36,8 @@ if SERVER then
 	
 	include("scraparmor/sh_init.lua")
 	include("scraparmor/sv_armor.lua")
+	include("scraparmor/sv_inventory.lua")
+	include("includes/net_meepdarkness.lua")
 end
 
 if CLIENT then
@@ -44,6 +45,7 @@ if CLIENT then
 	include("scraparmor/sh_init.lua")
 	include("scraparmor/cl_armor.lua")
 	include("scraparmor/cl_inventory.lua")
+	include("includes/net_meepdarkness.lua")
 	
 	LocalPlayer().armor = {}
 	

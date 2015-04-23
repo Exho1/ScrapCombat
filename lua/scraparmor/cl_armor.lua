@@ -4,6 +4,8 @@
 function scrapArmor.add( class, ply )
 	ply = ply or LocalPlayer()
 	
+	print("Adding "..class.." for "..ply:Nick())
+	
 	for key, tbl in pairs( scrapArmor.attachments ) do
 		if key:lower() == class:lower() then
 			ply.armor = ply.armor or {}
@@ -25,8 +27,10 @@ function scrapArmor.add( class, ply )
 					ply.armor[index2].class = class
 					ply.armor[index2].health = health
 				end
+				
+				return ply.armor[index], ply.armor[index2]
 			else
-				print("Cannot add new armor ("..class..") on top of existing for: ", ply:Nick())
+				print("Cannot add new armor ("..class..") on top of existing for: "..ply:Nick())
 				return
 			end
 		end

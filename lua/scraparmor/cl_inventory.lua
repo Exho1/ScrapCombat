@@ -58,11 +58,11 @@ function scrapInventory.buildCustomizeMenu()
 		if not isChange then
 			for bone, model in pairs( initialArmor ) do
 				if not client.armor[bone] then
-					print("Removed armor")
+					print("Removed armor", bone)
 					isChange = true
 					break
 				elseif model.class != client.armor[bone].class then	
-					print("Differing armor class")
+					print("Differing armor class", model.class, client.armor[bone].class)
 					isChange = true
 					break
 				end
@@ -89,6 +89,7 @@ function scrapInventory.buildCustomizeMenu()
 	local playerModel = vgui.Create("DModelPanel", frame)
 	playerModel:SetSize( 200, 450 )
 	playerModel:SetPos( 100, 25 )
+	playerModel:SetCursor("arrow")
 	playerModel:SetModel( LocalPlayer():GetModel() )
 	function playerModel:LayoutEntity( Entity ) return end
 	
@@ -99,10 +100,34 @@ function scrapInventory.buildCustomizeMenu()
 	-- Modify the DModelPanel to draw our armor onto the player model
 	local oldDraw = playerModel.DrawModel
 	function playerModel:DrawModel()
-		oldDraw( playerModel )
+		if hook.Run("PreDrawModelPanel", self, self.Entity) == false then 	
+			return 
+		end
 		
-		local ent = self.Entity
+		local curparent = self
+		local rightx = self:GetWide()
+		local leftx = 0
+		local topy = 0
+		local bottomy = self:GetTall()
+		local previous = curparent
+		while( curparent:GetParent() != nil ) do
+			curparent = curparent:GetParent()
+			local x, y = previous:GetPos()
+			topy = math.Max( y, topy + y )
+			leftx = math.Max( x, leftx + x )
+			bottomy = math.Min( y + previous:GetTall(), bottomy + y )
+			rightx = math.Min( x + previous:GetWide(), rightx + x )
+			previous = curparent
+		end
+		render.SetScissorRect( leftx, topy, rightx, bottomy, true )
+		self.Entity:DrawModel()
+		render.SetScissorRect( 0, 0, 0, 0, false )
 		
+		hook.Run("PostDrawModelPanel", self, self.Entity)
+	end
+	
+	-- Draw our armor onto the entity
+	hook.Add("PostDrawModelPanel", "dmodelarmor", function( panel, ent )
 		for bone, model in pairs( client.armor ) do
 			local data = scrapArmor.attachments[model.class]
 			
@@ -143,7 +168,7 @@ function scrapInventory.buildCustomizeMenu()
 				model:SetRenderAngles()
 			end
 		end
-	end
+	end)
 	
 	scrapInventory.armorSlots = {}
 	

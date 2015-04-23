@@ -78,6 +78,7 @@ net.Receive( "scrap_updatearmor", function( len, ply )
 	local newArmor = net.ReadTable()
 	
 	-- TODO: Implement a way to verify this, it relies on a lot of client input which is prone to malicious tinkering
+	-- I could always check if the player had these items in their inventory
 	
 	for bone, tbl in pairs( ply.attachments ) do
 		if newArmor[bone] then
@@ -102,6 +103,8 @@ end)
 
 -- Gives the player a new piece of armor
 function scrapArmor.giveArmor( ply, class )
+	print("Giving "..class.. " to "..ply:Nick())
+	
 	ply.armorHitgroups = ply.armorHitgroups or {}
 	ply.attachments = ply.attachments or {}
 	
